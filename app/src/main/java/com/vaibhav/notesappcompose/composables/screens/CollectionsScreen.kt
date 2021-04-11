@@ -3,13 +3,10 @@ package com.vaibhav.notesappcompose.composables.screens
 import android.content.res.Resources
 import android.preference.PreferenceActivity
 import android.widget.Space
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +37,7 @@ fun CollectionsScreen(navController: NavController) {
         val (screen, fab) = createRefs()
         CollectionMainScreen(modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colors.background)
             .constrainAs(screen) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
@@ -62,7 +60,10 @@ fun CollectionsScreen(navController: NavController) {
 fun CollectionMainScreen(modifier: Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Header(modifier = Modifier.padding(16.dp))
-        LazyColumn(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             items(sampleCollections) {
                 CollectionItem(collection = it) {
 

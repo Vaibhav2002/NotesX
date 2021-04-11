@@ -13,6 +13,11 @@ val chivoRegular = Font(R.font.chivo_regular)
 val overpass = Font(R.font.overpass_regular)
 
 val Typography = Typography(
+    h2=TextStyle(
+        fontFamily = FontFamily(chivoRegular),
+        fontWeight = FontWeight.Normal,
+        fontSize = 65.sp
+    ),
     h3=TextStyle(
         fontFamily = FontFamily(chivoBold),
         fontWeight = FontWeight.Bold,
@@ -47,7 +52,7 @@ val Typography = Typography(
     body1 = TextStyle(
         fontFamily = FontFamily(overpass),
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 18.sp
     ),
     body2 = TextStyle(
         fontFamily = FontFamily(overpass),

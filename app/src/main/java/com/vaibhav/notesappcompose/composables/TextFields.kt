@@ -8,20 +8,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vaibhav.notesappcompose.R
 import com.vaibhav.notesappcompose.ui.theme.*
 
 @Composable
-fun AuthTextField(
+fun OutlinedTextField(
     label: String,
     isPassword: Boolean = false,
-    modifier: Modifier
+    modifier: Modifier,
+    textFieldColors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors()
 ) {
     var initialValue by remember { mutableStateOf("") }
     OutlinedTextField(
@@ -33,6 +34,7 @@ fun AuthTextField(
         },
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         modifier = modifier,
+        colors = textFieldColors
     )
 }
 
@@ -48,11 +50,13 @@ fun SearchBar(
     else
         white
 
-    TextField(value = value, modifier = Modifier
-        .fillMaxWidth(0.9f)
-        .background(bgColor),
+    TextField(
+        value = value, modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .clip(RoundedCornerShape(20.dp)),
         label = {
-            Text(text = label, color = black)
+            Text(text = label, color = black, modifier = Modifier.background(bgColor))
         },
         leadingIcon = {
             Icon(
@@ -61,11 +65,16 @@ fun SearchBar(
                 contentDescription = "Search"
             )
         },
-        shape = RoundedCornerShape(32.dp),
         onValueChange = {
             value = it
             onQueryChange(value)
-        })
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = bgColor,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent
+        )
+    )
 }
 
 

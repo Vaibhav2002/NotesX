@@ -11,11 +11,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vaibhav.notesappcompose.data.models.Collection
+import com.vaibhav.notesappcompose.data.models.Note
 import com.vaibhav.notesappcompose.ui.theme.blueDarkMode
 import com.vaibhav.notesappcompose.ui.theme.blueLight
+import com.vaibhav.notesappcompose.ui.theme.getColorForCards
 import com.vaibhav.notesappcompose.ui.theme.white
 
 @Composable
@@ -23,27 +27,47 @@ fun CollectionItem(
     collection: Collection,
     onClick: () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
-    val bgColor = if (collection.isImportant) {
-        if (isDark)
-            blueDarkMode
-        else
-            blueLight
-    } else MaterialTheme.colors.surface
+    val bgColor = getColorForCards(isImportant = collection.isImportant)
     Card(
         modifier = Modifier
             .fillMaxWidth(0.9f)
+            .clip(RoundedCornerShape(12.dp))
             .clickable {
                 onClick()
             },
-        shape = RoundedCornerShape(24.dp),
-        backgroundColor = bgColor
+        backgroundColor = bgColor,
+        elevation = 0.dp
     ) {
         Box(modifier = Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
             Text(text = collection.name, style = MaterialTheme.typography.h6)
         }
     }
-    Spacer(modifier = Modifier.padding(8.dp))
+    Spacer(modifier = Modifier.padding(12.dp))
 }
 
 
+@Composable
+fun NoteItem(
+    note: Note,
+    onClick: () -> Unit
+){
+    val bgColor = getColorForCards(isImportant = note.isImportant)
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(0.6f)
+            .padding(8.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable { onClick() },
+//        shape = RoundedCornerShape(12.dp),
+        elevation = 0.dp,
+        backgroundColor = bgColor
+    ) {
+        Text(text = note.text, style = MaterialTheme.typography.body1,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .background(bgColor)
+                .clipToBounds()
+        )
+    }
+}
