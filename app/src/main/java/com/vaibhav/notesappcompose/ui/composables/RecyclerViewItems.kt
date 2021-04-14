@@ -1,8 +1,7 @@
-package com.vaibhav.notesappcompose.composables
+package com.vaibhav.notesappcompose.ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -13,14 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vaibhav.notesappcompose.data.models.Collection
-import com.vaibhav.notesappcompose.data.models.Note
-import com.vaibhav.notesappcompose.ui.theme.blueDarkMode
-import com.vaibhav.notesappcompose.ui.theme.blueLight
+import com.vaibhav.notesappcompose.data.models.entity.Collection
+import com.vaibhav.notesappcompose.data.models.entity.Note
 import com.vaibhav.notesappcompose.ui.theme.getColorForCards
-import com.vaibhav.notesappcompose.ui.theme.white
 
 @Composable
 fun CollectionItem(

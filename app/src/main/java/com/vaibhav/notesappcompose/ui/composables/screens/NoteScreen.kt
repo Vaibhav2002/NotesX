@@ -1,9 +1,12 @@
-package com.vaibhav.notesappcompose.composables.screens
+package com.vaibhav.notesappcompose.ui.composables.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
@@ -12,15 +15,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import com.vaibhav.notesappcompose.R
-import com.vaibhav.notesappcompose.composables.Fab
-import com.vaibhav.notesappcompose.composables.NoteItem
-import com.vaibhav.notesappcompose.composables.SearchBar
-import com.vaibhav.notesappcompose.data.models.Note
+import com.vaibhav.notesappcompose.data.models.entity.Note
+import com.vaibhav.notesappcompose.ui.composables.Fab
+import com.vaibhav.notesappcompose.ui.composables.NoteItem
+import com.vaibhav.notesappcompose.ui.composables.SearchBar
 import com.vaibhav.notesappcompose.ui.theme.darkGray
 import com.vaibhav.notesappcompose.ui.theme.lightGray
 
@@ -44,7 +47,7 @@ fun NoteScreen(navController: NavController) {
             bottom.linkTo(parent.bottom, margin = 16.dp)
             end.linkTo(parent.end, margin = 16.dp)
         }) {
-
+            navController.navigate("addNoteScreen")
         }
     }
 

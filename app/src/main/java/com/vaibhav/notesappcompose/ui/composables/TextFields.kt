@@ -1,12 +1,13 @@
-package com.vaibhav.notesappcompose.composables
+package com.vaibhav.notesappcompose.ui.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -15,7 +16,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.vaibhav.notesappcompose.R
-import com.vaibhav.notesappcompose.ui.theme.*
+import com.vaibhav.notesappcompose.ui.theme.black
+import com.vaibhav.notesappcompose.ui.theme.lightGray
+import com.vaibhav.notesappcompose.ui.theme.white
 
 @Composable
 fun OutlinedTextField(
@@ -77,6 +80,32 @@ fun SearchBar(
     )
 }
 
+@Composable
+fun SwitchTOLoginOrRegisterTexts(
+    modifier: Modifier,
+    text1: String,
+    text2: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = text1,
+            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.body2
+        )
+        Spacer(modifier = Modifier.padding(2.dp))
+        Text(
+            text = text2,
+            color = MaterialTheme.colors.primary,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.clickable { onClick() }
+        )
+    }
+}
 
 //@Composable
 //fun passwordTextField(

@@ -20,13 +20,13 @@ val Typography = Typography(
     ),
     h3=TextStyle(
         fontFamily = FontFamily(chivoBold),
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Normal,
         fontSize = 50.sp
     ),
 
     h4 = TextStyle(
         fontFamily = FontFamily(chivoBold),
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Normal,
         fontSize = 35.sp
     ),
     h5 = TextStyle(

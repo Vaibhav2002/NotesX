@@ -1,24 +1,25 @@
-package com.vaibhav.notesappcompose.composables.screens
+package com.vaibhav.notesappcompose.ui.composables.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Switch
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.vaibhav.notesappcompose.R
-import com.vaibhav.notesappcompose.composables.Fab
-import com.vaibhav.notesappcompose.composables.OutlinedTextField
+import com.vaibhav.notesappcompose.ui.composables.Fab
+import com.vaibhav.notesappcompose.ui.composables.OutlinedTextField
 import com.vaibhav.notesappcompose.ui.theme.darkGray
 import com.vaibhav.notesappcompose.ui.theme.lightGray
+import com.vaibhav.notesappcompose.ui.theme.white
 
 @Composable
 fun AddNoteScreen(navController: NavController) {
@@ -38,7 +39,7 @@ fun AddNoteScreen(navController: NavController) {
             bottom.linkTo(parent.bottom, margin = 16.dp)
             end.linkTo(parent.end, margin = 16.dp)
         }) {
-
+            navController.popBackStack()
         }
     }
 }
@@ -50,6 +51,7 @@ fun AddNoteMainScreen(
 
     var isChecked by remember { mutableStateOf(false) }
     val color = if (isSystemInDarkTheme()) lightGray else darkGray
+    val textFieldColor = if (isSystemInDarkTheme()) darkGray else white
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -57,17 +59,23 @@ fun AddNoteMainScreen(
         Text(
             text = "Create\nNote",
             style = MaterialTheme.typography.h2,
-            color = color,
+            color = MaterialTheme.colors.onBackground,
             modifier = Modifier
                 .padding(top = 32.dp, start = 16.dp, end = 16.dp),
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.padding(16.dp))
-        Row(modifier = Modifier.fillMaxWidth().padding(end = 16.dp),horizontalArrangement = Arrangement.End) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 16.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
             Text(
                 text = "Important Note",
                 style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier.padding(end = 16.dp),
+                color = color
             )
             Switch(checked = isChecked, onCheckedChange = {
                 isChecked = it
@@ -79,7 +87,7 @@ fun AddNoteMainScreen(
                 .fillMaxSize()
                 .padding(16.dp),
             textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = MaterialTheme.colors.surface
+                backgroundColor = textFieldColor
             )
         )
 

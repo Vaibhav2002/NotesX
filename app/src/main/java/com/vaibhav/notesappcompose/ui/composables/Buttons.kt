@@ -1,15 +1,13 @@
-package com.vaibhav.notesappcompose.composables
+package com.vaibhav.notesappcompose.ui.composables
 
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vaibhav.notesappcompose.R
 
 
 @Composable
@@ -21,11 +19,36 @@ fun PrimaryButton(
     Button(
         modifier = modifier,
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(12.dp)
     ) {
         Text(
             text,
             style = MaterialTheme.typography.button,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+    }
+}
+
+@Composable
+fun SecondaryButton(
+    text: String,
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = { onClick() },
+        border = BorderStroke(2.dp, MaterialTheme.colors.primary),
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = MaterialTheme.colors.primary,
+            backgroundColor = MaterialTheme.colors.background
+        ),
+    ) {
+        Text(
+            text,
+            style = MaterialTheme.typography.button,
+            color = MaterialTheme.colors.primary,
             modifier = Modifier.padding(vertical = 8.dp)
         )
     }
@@ -44,10 +67,4 @@ fun Fab(
 
 
 
-@Preview
-@Composable
-fun ButtonPreview() {
-    PrimaryButton(text = "LOGIN", modifier = Modifier
-        .fillMaxWidth(), onClick = {})
-}
 

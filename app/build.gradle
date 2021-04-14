@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
 }
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdk 30
@@ -71,4 +73,16 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
 
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    //hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
 }
