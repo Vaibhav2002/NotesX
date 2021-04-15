@@ -82,13 +82,15 @@ fun AddNoteMainScreen(
             })
         }
         OutlinedTextField(
+            value = "",
             label = "Note",
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
                 backgroundColor = textFieldColor
-            )
+            ),
+            onValueChange = {}
         )
 
     }

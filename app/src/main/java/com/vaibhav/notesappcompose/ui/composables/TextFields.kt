@@ -22,20 +22,20 @@ import com.vaibhav.notesappcompose.ui.theme.white
 
 @Composable
 fun OutlinedTextField(
+    value: String,
     label: String,
     isPassword: Boolean = false,
     modifier: Modifier,
+    onValueChange: (String) -> Unit,
     textFieldColors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors()
 ) {
-    var initialValue by remember { mutableStateOf("") }
     OutlinedTextField(
-        value = initialValue,
+        value = value,
         maxLines = 1,
-        label = { Text(label) },
-        onValueChange = { newText ->
-            initialValue = newText
-        },
-        visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+        onValueChange = onValueChange,
+        label = { Text(text = label) },
+        visualTransformation =
+        if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         modifier = modifier,
         colors = textFieldColors
     )

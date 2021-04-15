@@ -1,11 +1,13 @@
 package com.vaibhav.notesappcompose.di
 
+import android.content.Context
 import com.vaibhav.notesappcompose.data.api.Api
 import com.vaibhav.notesappcompose.data.models.mappers.CollectionMapper
 import com.vaibhav.notesappcompose.data.models.mappers.UserMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,5 +34,8 @@ object module {
     @Provides
     fun providesCollectionMapper(): CollectionMapper = CollectionMapper()
 
-
+    @Singleton
+    @Provides
+    fun providesSharedPreferences(@ApplicationContext context: Context) =
+        context.getSharedPreferences("NOTES", Context.MODE_PRIVATE)
 }

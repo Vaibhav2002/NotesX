@@ -1,4 +1,4 @@
-package com.vaibhav.notesappcompose.data.repo
+package com.vaibhav.notesappcompose.data.repo.auth
 
 import com.vaibhav.notesappcompose.data.models.entity.User
 import com.vaibhav.notesappcompose.data.models.remote.requests.RegisterBody

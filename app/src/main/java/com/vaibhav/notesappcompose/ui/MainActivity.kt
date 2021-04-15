@@ -10,7 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import com.vaibhav.notesappcompose.ui.composables.LoginScreen
 import com.vaibhav.notesappcompose.ui.composables.screens.*
 import com.vaibhav.notesappcompose.ui.theme.NotesAppComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
