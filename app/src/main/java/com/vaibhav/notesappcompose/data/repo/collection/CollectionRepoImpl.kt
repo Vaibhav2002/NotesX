@@ -19,7 +19,7 @@ class CollectionRepoImpl @Inject constructor(
 ) : CollectionRepo {
 
     override fun getAllCollections(query: String): LiveData<List<Collection>> =
-        dao.getAllCollections()
+            dao.getAllCollectionsBasedOnQuery("$query%")
 
     override suspend fun addCollection(
         userId: Int,

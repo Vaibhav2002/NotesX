@@ -9,8 +9,8 @@ import com.vaibhav.notesappcompose.data.models.entity.Collection
 @Dao
 interface Dao {
 
-//    @Query("SELECT * FROM collection_table WHERE name LIKE '%' +:query +'%' ORDER BY isImportant DESC")
-//    fun getAllCollections(query: String): LiveData<List<Collection>>
+    @Query("SELECT * FROM collection_table WHERE name LIKE :query ORDER BY isImportant DESC")
+    fun getAllCollectionsBasedOnQuery(query: String): LiveData<List<Collection>>
 
 
     @Query("SELECT * FROM collection_table ORDER BY isImportant DESC")

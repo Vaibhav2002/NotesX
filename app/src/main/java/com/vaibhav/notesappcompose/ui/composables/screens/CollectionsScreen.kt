@@ -118,7 +118,7 @@ fun CollectionMainScreen(
 @Composable
 fun Header(modifier: Modifier, navController: NavController, viewModel: CollectionViewModel) {
 
-    val searchValue = viewModel.queryState.value
+    val searchValue = viewModel.queryState.observeAsState(initial = "")
 
     Spacer(modifier = Modifier.padding(16.dp))
     UserAvatar(image = R.drawable.avatar, size = 150.dp, onClick = {
@@ -131,7 +131,7 @@ fun Header(modifier: Modifier, navController: NavController, viewModel: Collecti
         color = MaterialTheme.colors.onSurface,
         modifier = modifier
     )
-    SearchBar(label = "Search Collections...", value = searchValue) {
+    SearchBar(label = "Search Collections...", value = searchValue.value) {
         viewModel.onQueryTextChange(it)
     }
     Spacer(modifier = Modifier.padding(16.dp))

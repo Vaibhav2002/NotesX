@@ -1,7 +1,9 @@
 package com.vaibhav.notesappcompose.ui.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.vaibhav.notesappcompose.data.models.entity.Collection
 import com.vaibhav.notesappcompose.data.models.entity.User
@@ -25,12 +27,15 @@ class CollectionViewModel @Inject constructor(
     val errorState = mutableStateOf("")
     val loadingState = mutableStateOf(false)
     val dialogState = mutableStateOf(false)
-    val queryState = mutableStateOf("")
+    val queryState = MutableLiveData<String>("")
 
 
 //    val collections = collectionRepoImpl.getAllCollections(queryState.value)
 
-    val collections = collectionRepoImpl.getAllCollections("")
+
+    val collections = queryState.switchMap {
+        collectionRepoImpl.getAllCollections(it)
+    }
 
     //addCollectionScreen
     var collectionName = mutableStateOf("")
@@ -50,7 +55,7 @@ class CollectionViewModel @Inject constructor(
     }
 
     fun onQueryTextChange(query: String) {
-        queryState.value = query
+        queryState.postValue(query)
     }
 
     init {
