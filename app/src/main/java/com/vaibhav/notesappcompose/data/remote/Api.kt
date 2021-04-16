@@ -1,4 +1,4 @@
-package com.vaibhav.notesappcompose.data.api
+package com.vaibhav.notesappcompose.data.remote
 
 import com.vaibhav.notesappcompose.data.models.remote.requests.CollectionBody
 import com.vaibhav.notesappcompose.data.models.remote.requests.RegisterBody

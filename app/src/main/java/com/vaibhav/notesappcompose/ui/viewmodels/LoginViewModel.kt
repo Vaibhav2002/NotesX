@@ -10,6 +10,7 @@ import com.vaibhav.notesappcompose.data.repo.auth.AuthRepoImpl
 import com.vaibhav.notesappcompose.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,6 +51,7 @@ class LoginViewModel @Inject constructor(
                 password = password.value
             )
         )
+        Timber.d(_loginState.value?.data.toString())
     }
 
     private fun validateInput() =

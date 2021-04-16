@@ -88,7 +88,8 @@ fun AddNoteMainScreen(
                 .fillMaxSize()
                 .padding(16.dp),
             textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = textFieldColor
+                backgroundColor = textFieldColor,
+                textColor = MaterialTheme.colors.onBackground
             ),
             onValueChange = {}
         )

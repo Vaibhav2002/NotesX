@@ -4,9 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,7 +27,9 @@ fun OutlinedTextField(
     isPassword: Boolean = false,
     modifier: Modifier,
     onValueChange: (String) -> Unit,
-    textFieldColors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors()
+    textFieldColors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+        textColor = MaterialTheme.colors.onBackground
+    )
 ) {
     OutlinedTextField(
         value = value,
@@ -44,10 +46,10 @@ fun OutlinedTextField(
 
 @Composable
 fun SearchBar(
+    value: String,
     label: String,
     onQueryChange: (String) -> Unit
 ) {
-    var value by remember { mutableStateOf("") }
     val bgColor = if (isSystemInDarkTheme())
         lightGray
     else
@@ -57,7 +59,7 @@ fun SearchBar(
         value = value, modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(20.dp)),
+            .clip(AbsoluteRoundedCornerShape(20.dp)),
         label = {
             Text(text = label, color = black, modifier = Modifier.background(bgColor))
         },
@@ -68,10 +70,7 @@ fun SearchBar(
                 contentDescription = "Search"
             )
         },
-        onValueChange = {
-            value = it
-            onQueryChange(value)
-        },
+        onValueChange = onQueryChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = bgColor,
             focusedIndicatorColor = Color.Transparent,

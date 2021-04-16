@@ -2,10 +2,11 @@ package com.vaibhav.notesappcompose.ui.composables
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
@@ -17,9 +18,8 @@ fun PrimaryButton(
     onClick: () -> Unit
 ) {
     Button(
-        modifier = modifier,
+        modifier = modifier.clip(AbsoluteRoundedCornerShape(12.dp)),
         onClick = onClick,
-        shape = RoundedCornerShape(12.dp)
     ) {
         Text(
             text,
@@ -39,7 +39,7 @@ fun SecondaryButton(
         onClick = { onClick() },
         border = BorderStroke(2.dp, MaterialTheme.colors.primary),
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = AbsoluteRoundedCornerShape(12.dp),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = MaterialTheme.colors.primary,
             backgroundColor = MaterialTheme.colors.background

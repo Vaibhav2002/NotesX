@@ -1,9 +1,12 @@
 package com.vaibhav.notesappcompose.di
 
 import android.content.Context
-import com.vaibhav.notesappcompose.data.api.Api
+import androidx.room.Room
+import com.vaibhav.notesappcompose.data.local.Dao
+import com.vaibhav.notesappcompose.data.local.DataBase
 import com.vaibhav.notesappcompose.data.models.mappers.CollectionMapper
 import com.vaibhav.notesappcompose.data.models.mappers.UserMapper
+import com.vaibhav.notesappcompose.data.remote.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,4 +41,21 @@ object module {
     @Provides
     fun providesSharedPreferences(@ApplicationContext context: Context) =
         context.getSharedPreferences("NOTES", Context.MODE_PRIVATE)
+
+    @Provides
+    @Singleton
+    fun providesRoom(@ApplicationContext context: Context): DataBase = Room.databaseBuilder(
+        context,
+        DataBase::class.java,
+        "My_Note_Datbase"
+    )
+        .fallbackToDestructiveMigration()
+        .build()
+
+
+    @Provides
+    @Singleton
+    fun providesDao(database: DataBase): Dao = database.dao
+
+
 }

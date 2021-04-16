@@ -3,7 +3,7 @@ package com.vaibhav.notesappcompose.ui.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -25,8 +25,9 @@ fun CollectionItem(
     val bgColor = getColorForCards(isImportant = collection.isImportant)
     Card(
         modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .clip(RoundedCornerShape(12.dp))
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .clip(AbsoluteRoundedCornerShape(16.dp))
             .clickable {
                 onClick()
             },
@@ -37,7 +38,7 @@ fun CollectionItem(
             Text(text = collection.name, style = MaterialTheme.typography.h6)
         }
     }
-    Spacer(modifier = Modifier.padding(12.dp))
+    Spacer(modifier = Modifier.padding(8.dp))
 }
 
 
@@ -51,7 +52,7 @@ fun NoteItem(
         modifier = Modifier
             .fillMaxWidth(0.6f)
             .padding(8.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(AbsoluteRoundedCornerShape(12.dp))
             .clickable { onClick() },
 //        shape = RoundedCornerShape(12.dp),
         elevation = 0.dp,

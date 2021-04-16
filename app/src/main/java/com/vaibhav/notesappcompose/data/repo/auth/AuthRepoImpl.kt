@@ -1,9 +1,9 @@
 package com.vaibhav.notesappcompose.data.repo.auth
 
-import com.vaibhav.notesappcompose.data.api.Api
 import com.vaibhav.notesappcompose.data.models.entity.User
 import com.vaibhav.notesappcompose.data.models.mappers.UserMapper
 import com.vaibhav.notesappcompose.data.models.remote.requests.RegisterBody
+import com.vaibhav.notesappcompose.data.remote.Api
 import com.vaibhav.notesappcompose.data.repo.preferences.PreferencesRepo
 import com.vaibhav.notesappcompose.util.Resource
 import kotlinx.coroutines.Dispatchers

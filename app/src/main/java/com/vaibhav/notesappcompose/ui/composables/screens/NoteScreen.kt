@@ -80,7 +80,7 @@ fun NoteMainScreen(
                 .padding(start = 16.dp, end = 16.dp, bottom = 32.dp)
         )
 
-        SearchBar(label = "Search Notes...") {
+        SearchBar(label = "Search Notes...", value = "") {
 
         }
         val sampleList = listOf<Note>(

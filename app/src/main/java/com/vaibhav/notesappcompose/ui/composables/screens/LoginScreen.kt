@@ -27,8 +27,6 @@ fun LoginScreen(navController: NavController) {
     val viewModel: LoginViewModel =
         hiltNavGraphViewModel(backStackEntry = navController.currentBackStackEntry!!)
 
-    if (viewModel.isUserLoggedIn())
-        navigateToCollectionScreen(navController)
 
     val uiState = viewModel.loginState.observeAsState()
     LoginMainScreen(navController = navController, viewModel = viewModel)
