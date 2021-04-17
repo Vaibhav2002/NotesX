@@ -2,9 +2,11 @@ package com.vaibhav.notesappcompose.di
 
 import android.content.Context
 import androidx.room.Room
-import com.vaibhav.notesappcompose.data.local.Dao
+import com.vaibhav.notesappcompose.data.local.CollectionDao
 import com.vaibhav.notesappcompose.data.local.DataBase
+import com.vaibhav.notesappcompose.data.local.NoteDao
 import com.vaibhav.notesappcompose.data.models.mappers.CollectionMapper
+import com.vaibhav.notesappcompose.data.models.mappers.NoteMapper
 import com.vaibhav.notesappcompose.data.models.mappers.UserMapper
 import com.vaibhav.notesappcompose.data.remote.Api
 import dagger.Module
@@ -37,6 +39,9 @@ object module {
     @Provides
     fun providesCollectionMapper(): CollectionMapper = CollectionMapper()
 
+    @Provides
+    fun providesNoteMapper(): NoteMapper = NoteMapper()
+
     @Singleton
     @Provides
     fun providesSharedPreferences(@ApplicationContext context: Context) =
@@ -55,7 +60,10 @@ object module {
 
     @Provides
     @Singleton
-    fun providesDao(database: DataBase): Dao = database.dao
+    fun providesCollectionDao(database: DataBase): CollectionDao = database.collectionDao
 
+    @Provides
+    @Singleton
+    fun providesNoteDao(database: DataBase): NoteDao = database.noteDao
 
 }

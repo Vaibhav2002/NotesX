@@ -107,7 +107,6 @@ fun RegisterMainScreen(navController: NavController, viewModel: RegisterViewMode
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            isPassword = true,
             onValueChange = { viewModel.onEmailChange(it) }
         )
         Spacer(modifier = Modifier.height(8.dp))

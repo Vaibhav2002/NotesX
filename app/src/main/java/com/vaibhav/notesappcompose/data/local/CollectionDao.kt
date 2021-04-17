@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.vaibhav.notesappcompose.data.models.entity.Collection
 
 @Dao
-interface Dao {
+interface CollectionDao {
 
     @Query("SELECT * FROM collection_table WHERE name LIKE :query ORDER BY isImportant DESC")
     fun getAllCollectionsBasedOnQuery(query: String): LiveData<List<Collection>>

@@ -1,9 +1,9 @@
 package com.vaibhav.notesappcompose.data.models.remote.responses
 
-data class CollectionResponseItem(
+data class NoteResponseItem(
+    val collectionId: Int,
     val id: Long,
     val isImportant: Boolean,
-    val name: String,
-    val timeStamp: String,
-    val userId: Int
+    val text: String,
+    val timeStamp: String
 )

@@ -4,5 +4,4 @@ interface DomainMappers<NetworkModel, DomainModel> {
 
     fun mapToDomainModel(model: NetworkModel): DomainModel
     fun mapToDomainModelList(modelList: List<NetworkModel>): List<DomainModel>
-
 }

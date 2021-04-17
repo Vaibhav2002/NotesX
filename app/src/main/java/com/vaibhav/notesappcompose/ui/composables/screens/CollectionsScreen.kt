@@ -107,8 +107,8 @@ fun CollectionMainScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             items(collections) {
-                CollectionItem(collection = it) {
-                    navController.navigate("noteScreen")
+                CollectionItem(collection = it) { collection ->
+                    navController.navigate("noteScreen/${collection.id}")
                 }
             }
         }

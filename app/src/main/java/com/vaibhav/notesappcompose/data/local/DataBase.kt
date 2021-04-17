@@ -5,8 +5,9 @@ import androidx.room.RoomDatabase
 import com.vaibhav.notesappcompose.data.models.entity.Collection
 import com.vaibhav.notesappcompose.data.models.entity.Note
 
-@Database(entities = [Collection::class, Note::class], version = 1, exportSchema = false)
+@Database(entities = [Collection::class, Note::class], version = 2, exportSchema = false)
 abstract class DataBase : RoomDatabase() {
 
-    abstract val dao: Dao
+    abstract val collectionDao: CollectionDao
+    abstract val noteDao: NoteDao
 }

@@ -1,10 +1,9 @@
 package com.vaibhav.notesappcompose.data.remote
 
 import com.vaibhav.notesappcompose.data.models.remote.requests.CollectionBody
+import com.vaibhav.notesappcompose.data.models.remote.requests.NoteBody
 import com.vaibhav.notesappcompose.data.models.remote.requests.RegisterBody
-import com.vaibhav.notesappcompose.data.models.remote.responses.AuthResponse
-import com.vaibhav.notesappcompose.data.models.remote.responses.CollectionResponse
-import com.vaibhav.notesappcompose.data.models.remote.responses.CollectionResponseItem
+import com.vaibhav.notesappcompose.data.models.remote.responses.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -26,4 +25,10 @@ interface Api {
 
     @POST("/collection")
     suspend fun addCollection(@Body collection: CollectionBody): Response<CollectionResponseItem>
+
+    @GET("/note/{collectionId}")
+    suspend fun getAllNotes(@Path("collectionId") collectionId: Long): Response<NoteResponse>
+
+    @POST("/note")
+    suspend fun addNewNote(@Body note: NoteBody): Response<NoteResponseItem>
 }

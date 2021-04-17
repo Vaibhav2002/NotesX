@@ -1,7 +1,7 @@
 package com.vaibhav.notesappcompose.data.repo.collection
 
 import androidx.lifecycle.LiveData
-import com.vaibhav.notesappcompose.data.local.Dao
+import com.vaibhav.notesappcompose.data.local.CollectionDao
 import com.vaibhav.notesappcompose.data.models.entity.Collection
 import com.vaibhav.notesappcompose.data.models.mappers.CollectionMapper
 import com.vaibhav.notesappcompose.data.models.remote.requests.CollectionBody
@@ -13,13 +13,13 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class CollectionRepoImpl @Inject constructor(
-    private val dao: Dao,
+    private val collectionDao: CollectionDao,
     private val api: Api,
     private val collectionMapper: CollectionMapper
 ) : CollectionRepo {
 
     override fun getAllCollections(query: String): LiveData<List<Collection>> =
-            dao.getAllCollectionsBasedOnQuery("$query%")
+        collectionDao.getAllCollectionsBasedOnQuery("$query%")
 
     override suspend fun addCollection(
         userId: Int,
@@ -38,8 +38,9 @@ class CollectionRepoImpl @Inject constructor(
         Timber.d("Collection From Repo $collectionBody")
         if (response.isSuccessful) {
             response.body()?.let {
-                saveCollectionIntoDatabase(listOf(collection))
-                Resource.Success(collection)
+                val collectionEntity = collectionMapper.mapToDomainModel(it)
+                saveCollectionIntoDatabase(listOf(collectionEntity))
+                Resource.Success(collectionEntity)
             } ?: Resource.Error(response.message(), null)
         } else
             Resource.Error(response.message(), null)
@@ -62,10 +63,10 @@ class CollectionRepoImpl @Inject constructor(
 
     override suspend fun saveCollectionIntoDatabase(collection: List<Collection>) =
         withContext(Dispatchers.IO) {
-            dao.addCollection(collection)
+            collectionDao.addCollection(collection)
         }
 
     override suspend fun deleteAllFromDatabase() = withContext(Dispatchers.IO) {
-        dao.deleteAllCollections()
+        collectionDao.deleteAllCollections()
     }
 }

@@ -21,10 +21,15 @@ class MainActivity : ComponentActivity() {
             NotesAppComposeTheme {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "loginScreen") {
-                    composable("collectionScreen") { CollectionsScreen(navController) }
                     composable("loginScreen") { LoginScreen(navController) }
                     composable("registerScreen") { RegisterScreen(navController) }
-                    composable("noteScreen") { NoteScreen(navController) }
+                    composable("collectionScreen") { CollectionsScreen(navController) }
+                    composable("noteScreen/{collectionId}") {
+                        NoteScreen(
+                            navController,
+                            it.arguments?.getString("collectionId") ?: "0"
+                        )
+                    }
                     composable("addNoteScreen") { AddNoteScreen(navController) }
                     composable("profileScreen") { ProfileScreen(navController = navController) }
                 }

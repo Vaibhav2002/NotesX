@@ -28,7 +28,7 @@ class AuthRepoImpl @Inject constructor(
                     return@withContext Resource.Error(response.message())
                 }
             } catch (e: Exception) {
-                return@withContext Resource.Error(e.localizedMessage ?: "Oops something went wrong")
+                return@withContext Resource.Error(e.message ?: "Oops something went wrong")
             }
         }
 
@@ -44,7 +44,7 @@ class AuthRepoImpl @Inject constructor(
                     return@withContext Resource.Error(response.message())
                 }
             } catch (e: Exception) {
-                return@withContext Resource.Error(e.localizedMessage ?: "Oops something went wrong")
+                return@withContext Resource.Error(e.message ?: "Oops something went wrong")
             }
         }
 

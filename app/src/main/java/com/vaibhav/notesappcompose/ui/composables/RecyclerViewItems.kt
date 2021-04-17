@@ -20,7 +20,7 @@ import com.vaibhav.notesappcompose.ui.theme.getColorForCards
 @Composable
 fun CollectionItem(
     collection: Collection,
-    onClick: () -> Unit
+    onClick: (Collection) -> Unit
 ) {
     val bgColor = getColorForCards(isImportant = collection.isImportant)
     Card(
@@ -29,7 +29,7 @@ fun CollectionItem(
             .padding(horizontal = 16.dp)
             .clip(AbsoluteRoundedCornerShape(16.dp))
             .clickable {
-                onClick()
+                onClick(collection)
             },
         backgroundColor = bgColor,
         elevation = 0.dp
