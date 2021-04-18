@@ -6,6 +6,7 @@ import com.vaibhav.notesappcompose.data.models.entity.Note
 import com.vaibhav.notesappcompose.data.models.mappers.NoteMapper
 import com.vaibhav.notesappcompose.data.models.remote.requests.NoteBody
 import com.vaibhav.notesappcompose.data.remote.Api
+import com.vaibhav.notesappcompose.data.util.mapToErrorResponse
 import com.vaibhav.notesappcompose.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -36,7 +37,12 @@ class NoteRepoImpl @Inject constructor(
                         saveNotesIntoDatabase(listOf(noteEntity))
                         return@withContext Resource.Success(noteEntity)
                     } ?: Resource.Error(response.message(), null)
-                } else Resource.Error(response.message(), null)
+                } else {
+                    val error = mapToErrorResponse(response.errorBody())
+                    return@withContext Resource.Error(
+                        error.message
+                    )
+                }
             } catch (exception: Exception) {
                 Resource.Error(exception.localizedMessage ?: "Oops something went wrong")
             }
@@ -51,9 +57,14 @@ class NoteRepoImpl @Inject constructor(
                         val entities = noteMapper.mapToDomainModelList(it)
                         deleteAllFromDatabase()
                         saveNotesIntoDatabase(entities)
-                        Resource.Success(entities)
+                        return@withContext Resource.Success(entities)
                     } ?: Resource.Error(response.message())
-                } else Resource.Error(response.message())
+                } else {
+                    val error = mapToErrorResponse(response.errorBody())
+                    return@withContext Resource.Error(
+                        error.message
+                    )
+                }
             } catch (exception: Exception) {
                 Resource.Error(exception.localizedMessage ?: "Oops something went wrong")
             }

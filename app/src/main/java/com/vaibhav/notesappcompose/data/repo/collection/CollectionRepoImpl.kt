@@ -6,6 +6,7 @@ import com.vaibhav.notesappcompose.data.models.entity.Collection
 import com.vaibhav.notesappcompose.data.models.mappers.CollectionMapper
 import com.vaibhav.notesappcompose.data.models.remote.requests.CollectionBody
 import com.vaibhav.notesappcompose.data.remote.Api
+import com.vaibhav.notesappcompose.data.util.mapToErrorResponse
 import com.vaibhav.notesappcompose.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,10 +41,14 @@ class CollectionRepoImpl @Inject constructor(
             response.body()?.let {
                 val collectionEntity = collectionMapper.mapToDomainModel(it)
                 saveCollectionIntoDatabase(listOf(collectionEntity))
-                Resource.Success(collectionEntity)
+                return@withContext Resource.Success(collectionEntity)
             } ?: Resource.Error(response.message(), null)
-        } else
-            Resource.Error(response.message(), null)
+        } else {
+            val error = mapToErrorResponse(response.errorBody())
+            return@withContext Resource.Error(
+                error.message
+            )
+        }
     }
 
 
@@ -55,10 +60,14 @@ class CollectionRepoImpl @Inject constructor(
                     deleteAllFromDatabase()
                     val collections = collectionMapper.mapToDomainModelList(it)
                     saveCollectionIntoDatabase(collections)
-                    Resource.Success(collections)
+                    return@withContext Resource.Success(collections)
                 } ?: Resource.Error(response.message(), null)
-            } else
-                Resource.Error(response.message(), null)
+            } else {
+                val error = mapToErrorResponse(response.errorBody())
+                return@withContext Resource.Error(
+                    error.message
+                )
+            }
         }
 
     override suspend fun saveCollectionIntoDatabase(collection: List<Collection>) =
