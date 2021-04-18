@@ -4,5 +4,5 @@ data class NoteBody(
     val collectionId: Long,
     val isImportant: Boolean,
     val text: String,
-    val timeStamp: String
+    val timeStamp: String = System.currentTimeMillis().toString()
 )

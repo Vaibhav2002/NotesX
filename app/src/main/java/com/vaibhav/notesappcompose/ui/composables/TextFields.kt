@@ -24,6 +24,7 @@ import com.vaibhav.notesappcompose.ui.theme.white
 fun OutlinedTextField(
     value: String,
     label: String,
+    isSingleLine: Boolean = true,
     isPassword: Boolean = false,
     modifier: Modifier,
     onValueChange: (String) -> Unit,
@@ -33,9 +34,9 @@ fun OutlinedTextField(
 ) {
     OutlinedTextField(
         value = value,
-        maxLines = 1,
         onValueChange = onValueChange,
         label = { Text(text = label) },
+        singleLine = isSingleLine,
         visualTransformation =
         if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         modifier = modifier,

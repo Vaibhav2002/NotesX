@@ -24,13 +24,19 @@ class MainActivity : ComponentActivity() {
                     composable("loginScreen") { LoginScreen(navController) }
                     composable("registerScreen") { RegisterScreen(navController) }
                     composable("collectionScreen") { CollectionsScreen(navController) }
-                    composable("noteScreen/{collectionId}") {
+                    composable("noteScreen/{collectionId}/{collectionName}") {
                         NoteScreen(
+                            navController,
+                            it.arguments?.getString("collectionId") ?: "0",
+                            it.arguments?.getString("collectionName") ?: "Notes"
+                        )
+                    }
+                    composable("addNoteScreen/{collectionId}") {
+                        AddNoteScreen(
                             navController,
                             it.arguments?.getString("collectionId") ?: "0"
                         )
                     }
-                    composable("addNoteScreen") { AddNoteScreen(navController) }
                     composable("profileScreen") { ProfileScreen(navController = navController) }
                 }
             }

@@ -3,6 +3,7 @@ package com.vaibhav.notesappcompose.ui.composables.screens
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,8 @@ import com.vaibhav.notesappcompose.ui.composables.CollectionItem
 import com.vaibhav.notesappcompose.ui.composables.Fab
 import com.vaibhav.notesappcompose.ui.composables.SearchBar
 import com.vaibhav.notesappcompose.ui.composables.UserAvatar
+import com.vaibhav.notesappcompose.ui.theme.darkGray
+import com.vaibhav.notesappcompose.ui.theme.lightGray
 import com.vaibhav.notesappcompose.ui.viewmodels.CollectionViewModel
 
 
@@ -99,7 +102,10 @@ fun CollectionMainScreen(
 ) {
 
     val collections = viewModel.collections.observeAsState().value ?: emptyList()
-
+    val imp = collections.count {
+        it.isImportant
+    }
+    viewModel.setImportantCollectionCount(imp.toLong())
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Header(modifier = Modifier.padding(16.dp), navController, viewModel)
         LazyColumn(
@@ -108,7 +114,7 @@ fun CollectionMainScreen(
         ) {
             items(collections) {
                 CollectionItem(collection = it) { collection ->
-                    navController.navigate("noteScreen/${collection.id}")
+                    navController.navigate("noteScreen/${collection.id}/${collection.name}")
                 }
             }
         }
@@ -119,17 +125,25 @@ fun CollectionMainScreen(
 fun Header(modifier: Modifier, navController: NavController, viewModel: CollectionViewModel) {
 
     val searchValue = viewModel.queryState.observeAsState(initial = "")
+    val importantCollectionState = viewModel.importantCollectionState.value
+    val color = if (isSystemInDarkTheme()) lightGray else darkGray
 
     Spacer(modifier = Modifier.padding(16.dp))
     UserAvatar(image = R.drawable.avatar, size = 150.dp, onClick = {
         navController.navigate("profileScreen")
     })
-    Spacer(modifier = Modifier.padding(16.dp))
     Text(
         text = "My Collections",
         style = MaterialTheme.typography.h4,
         color = MaterialTheme.colors.onSurface,
         modifier = modifier
+    )
+    Text(
+        text = "$importantCollectionState Important collections",
+        style = MaterialTheme.typography.h6,
+        color = color,
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, bottom = 32.dp)
     )
     SearchBar(label = "Search Collections...", value = searchValue.value) {
         viewModel.onQueryTextChange(it)

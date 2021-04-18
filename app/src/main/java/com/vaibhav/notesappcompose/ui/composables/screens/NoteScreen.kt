@@ -16,9 +16,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
@@ -35,12 +37,16 @@ import com.vaibhav.notesappcompose.ui.viewmodels.NotesViewModel
 
 @ExperimentalFoundationApi
 @Composable
-fun NoteScreen(navController: NavController, collectionId: String) {
+fun NoteScreen(navController: NavController, collectionId: String, collectionName: String) {
 
     val viewModel: NotesViewModel =
         hiltNavGraphViewModel(backStackEntry = navController.currentBackStackEntry!!)
 
-    viewModel.setCollectionId(collectionId.toLong())
+    remember {
+        viewModel.setCollectionId(collectionId.toLong())
+        viewModel.setCollectionName(collectionName)
+        true
+    }
 
     val loadingState = viewModel.loadingState.value
     val errorState = viewModel.errorState.value
@@ -79,7 +85,7 @@ fun NoteScreen(navController: NavController, collectionId: String) {
             bottom.linkTo(parent.bottom, margin = 16.dp)
             end.linkTo(parent.end, margin = 16.dp)
         }) {
-            navController.navigate("addNoteScreen")
+            navController.navigate("addNoteScreen/$collectionId")
         }
     }
 
@@ -93,8 +99,14 @@ fun NoteMainScreen(
     viewModel: NotesViewModel
 ) {
     val color = if (isSystemInDarkTheme()) lightGray else darkGray
-    val notes = viewModel.notes.observeAsState(emptyList())
+    val notes = viewModel.notes.observeAsState(emptyList()).value
     val searchState = viewModel.searchQuery.observeAsState("")
+    val importantNotesCount = viewModel.importantNotesCount.value
+    val collectionName = viewModel.collectionName.value
+    val count = notes.count {
+        it.isImportant
+    }
+    viewModel.setImportantNotesCount(count.toLong())
 
 
     Column(
@@ -102,15 +114,16 @@ fun NoteMainScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Tasks",
+            text = collectionName,
             style = MaterialTheme.typography.h2,
             color = MaterialTheme.colors.onBackground,
             modifier = Modifier
-                .padding(top = 32.dp, start = 16.dp, end = 16.dp)
+                .padding(top = 32.dp, start = 16.dp, end = 16.dp),
+            textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.padding(8.dp))
         Text(
-            text = "10 Important notes",
+            text = "$importantNotesCount Important notes",
             style = MaterialTheme.typography.h6,
             color = color,
             modifier = Modifier
@@ -125,7 +138,7 @@ fun NoteMainScreen(
             cells = GridCells.Fixed(2),
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
-            items(notes.value) {
+            items(notes) {
                 NoteItem(note = it) {
 
                 }
@@ -133,4 +146,3 @@ fun NoteMainScreen(
         }
     }
 }
-

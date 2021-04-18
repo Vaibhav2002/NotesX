@@ -8,6 +8,7 @@ import com.vaibhav.notesappcompose.data.repo.preferences.PreferencesRepo
 import com.vaibhav.notesappcompose.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class AuthRepoImpl @Inject constructor(
@@ -20,15 +21,17 @@ class AuthRepoImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 val response = api.loginUser(email, password)
-                if (response.isSuccessful && response.body() != null) {
-                    val user = userMapper.mapToDomainModel(response.body()!!)
-                    preferencesRepo.saveUserData(user)
-                    return@withContext Resource.Success(user)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        val user = userMapper.mapToDomainModel(it)
+                        preferencesRepo.saveUserData(user)
+                        return@withContext Resource.Success(user)
+                    } ?: return@withContext Resource.Error(response.message())
                 } else {
                     return@withContext Resource.Error(response.message())
                 }
             } catch (e: Exception) {
-                return@withContext Resource.Error(e.message ?: "Oops something went wrong")
+                return@withContext Resource.Error(e.localizedMessage ?: "Oops something went wrong")
             }
         }
 
@@ -36,15 +39,18 @@ class AuthRepoImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 val response = api.registerUser(registerBody)
-                if (response.isSuccessful && response.body() != null) {
-                    val user = userMapper.mapToDomainModel(response.body()!!)
-                    preferencesRepo.saveUserData(user)
-                    return@withContext Resource.Success(user)
+                Timber.d(response.errorBody().toString() + "\n" + response.message())
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        val user = userMapper.mapToDomainModel(response.body()!!)
+                        preferencesRepo.saveUserData(user)
+                        return@withContext Resource.Success(user)
+                    } ?: return@withContext Resource.Error(response.message())
                 } else {
                     return@withContext Resource.Error(response.message())
                 }
             } catch (e: Exception) {
-                return@withContext Resource.Error(e.message ?: "Oops something went wrong")
+                return@withContext Resource.Error(e.localizedMessage ?: "Oops something went wrong")
             }
         }
 

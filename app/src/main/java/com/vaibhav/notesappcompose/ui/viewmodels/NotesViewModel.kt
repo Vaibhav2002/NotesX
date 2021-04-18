@@ -18,15 +18,26 @@ class NotesViewModel @Inject constructor(private val noteRepoImpl: NoteRepoImpl)
     val errorState = mutableStateOf("")
     val searchQuery = MutableLiveData<String>("")
     val collectionId = MutableLiveData<Long>(0)
+    val importantNotesCount = mutableStateOf(0L)
+    val collectionName = mutableStateOf("")
 
     private val _notes = searchQuery.switchMap {
         noteRepoImpl.getAllNotes(it)
     }
     val notes: LiveData<List<Note>> = _notes
 
+    fun setCollectionName(name: String) {
+        collectionName.value = name
+    }
+
     fun setCollectionId(id: Long) {
+        Timber.d(id.toString())
         collectionId.postValue(id)
-        fetchNotes()
+        fetchNotes(id)
+    }
+
+    fun setImportantNotesCount(count: Long) {
+        importantNotesCount.value = count
     }
 
 
@@ -34,9 +45,9 @@ class NotesViewModel @Inject constructor(private val noteRepoImpl: NoteRepoImpl)
         searchQuery.postValue(query)
     }
 
-    private fun fetchNotes() = viewModelScope.launch {
+    private fun fetchNotes(id: Long) = viewModelScope.launch {
         loadingState.value = true
-        val resource = noteRepoImpl.fetchNotes(collectionId.value ?: 0)
+        val resource = noteRepoImpl.fetchNotes(id)
         Timber.d(resource.data.toString())
         when (resource) {
             is Resource.Loading -> {

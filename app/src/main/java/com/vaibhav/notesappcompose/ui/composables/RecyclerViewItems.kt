@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.vaibhav.notesappcompose.data.models.entity.Collection
 import com.vaibhav.notesappcompose.data.models.entity.Note
@@ -46,7 +47,7 @@ fun CollectionItem(
 fun NoteItem(
     note: Note,
     onClick: () -> Unit
-){
+) {
     val bgColor = getColorForCards(isImportant = note.isImportant)
     Card(
         modifier = Modifier
@@ -58,12 +59,15 @@ fun NoteItem(
         elevation = 0.dp,
         backgroundColor = bgColor
     ) {
-        Text(text = note.text, style = MaterialTheme.typography.body1,
+        Text(
+            text = note.text, style = MaterialTheme.typography.body1,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
                 .background(bgColor)
-                .clipToBounds()
+                .clipToBounds(),
+            maxLines = 10,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

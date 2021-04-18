@@ -26,6 +26,9 @@ class CollectionViewModel @Inject constructor(
 
     val errorState = mutableStateOf("")
     val loadingState = mutableStateOf(false)
+    val importantCollectionState = mutableStateOf(0L)
+
+
     val dialogState = mutableStateOf(false)
     val queryState = MutableLiveData<String>("")
 
@@ -44,6 +47,10 @@ class CollectionViewModel @Inject constructor(
 
     fun setDialogState(state: Boolean) {
         dialogState.value = state
+    }
+
+    fun setImportantCollectionCount(count: Long) {
+        importantCollectionState.value = count
     }
 
     fun onCollectionNameChange(name: String) {
