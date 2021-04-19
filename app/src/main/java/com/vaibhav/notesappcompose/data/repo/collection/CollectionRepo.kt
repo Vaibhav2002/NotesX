@@ -6,13 +6,21 @@ import com.vaibhav.notesappcompose.util.Resource
 
 interface CollectionRepo {
 
-    fun getAllCollections(query: String): LiveData<List<Collection>>
 
+    //network calls
     suspend fun addCollection(userId: Int, collection: Collection): Resource<Collection>
 
     suspend fun fetchCollections(userId: Long): Resource<List<Collection>>
 
+    suspend fun deleteCollection(collection: Collection): Resource<Collection>
+
+
+    //local calls
     suspend fun saveCollectionIntoDatabase(collection: List<Collection>)
 
     suspend fun deleteAllFromDatabase()
+
+    fun getAllCollections(query: String): LiveData<List<Collection>>
+
+    suspend fun deleteCollectionFromDb(collection: Collection)
 }

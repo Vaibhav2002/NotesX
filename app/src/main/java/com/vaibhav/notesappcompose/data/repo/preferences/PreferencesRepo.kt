@@ -26,5 +26,9 @@ class PreferencesRepo @Inject constructor(private val sharedPref: SharedPreferen
         sharedPref.edit().putString(USER_SAVE_KEY, data).apply()
     }
 
+    fun removeUserData() {
+        sharedPref.edit().remove(USER_SAVE_KEY).apply()
+    }
+
 
 }

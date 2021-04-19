@@ -1,7 +1,7 @@
 package com.vaibhav.notesappcompose.ui.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.Card
@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.vaibhav.notesappcompose.data.models.entity.Collection
@@ -21,7 +22,8 @@ import com.vaibhav.notesappcompose.ui.theme.getColorForCards
 @Composable
 fun CollectionItem(
     collection: Collection,
-    onClick: (Collection) -> Unit
+    onClick: (Collection) -> Unit,
+    onItemLongPress: (Collection) -> Unit
 ) {
     val bgColor = getColorForCards(isImportant = collection.isImportant)
     Card(
@@ -29,8 +31,15 @@ fun CollectionItem(
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(AbsoluteRoundedCornerShape(16.dp))
-            .clickable {
-                onClick(collection)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        onClick(collection)
+                    },
+                    onLongPress = {
+                        onItemLongPress(collection)
+                    }
+                )
             },
         backgroundColor = bgColor,
         elevation = 0.dp
@@ -46,7 +55,8 @@ fun CollectionItem(
 @Composable
 fun NoteItem(
     note: Note,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onItemLongPress: (Note) -> Unit
 ) {
     val bgColor = getColorForCards(isImportant = note.isImportant)
     Card(
@@ -54,7 +64,16 @@ fun NoteItem(
             .fillMaxWidth(0.6f)
             .padding(8.dp)
             .clip(AbsoluteRoundedCornerShape(12.dp))
-            .clickable { onClick() },
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        onClick()
+                    },
+                    onLongPress = {
+                        onItemLongPress(note)
+                    }
+                )
+            },
 //        shape = RoundedCornerShape(12.dp),
         elevation = 0.dp,
         backgroundColor = bgColor

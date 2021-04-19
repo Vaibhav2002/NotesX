@@ -77,4 +77,24 @@ class NoteRepoImpl @Inject constructor(
     override suspend fun deleteAllFromDatabase() = withContext(Dispatchers.IO) {
         noteDao.deleteAllNotes()
     }
+
+    override suspend fun deleteNote(note: Note): Resource<Note> = withContext(Dispatchers.IO) {
+        val response = api.deleteNote(note.id)
+        if (response.isSuccessful) {
+            response.body()?.let {
+                val note = noteMapper.mapToDomainModel(it)
+                deleteNoteFromDb(note)
+                return@withContext Resource.Success(note)
+            } ?: Resource.Error(response.message(), null)
+        } else {
+            val error = mapToErrorResponse(response.errorBody())
+            return@withContext Resource.Error(
+                error.message
+            )
+        }
+    }
+
+    override suspend fun deleteNoteFromDb(note: Note) = withContext(Dispatchers.IO) {
+        noteDao.deleteNote(note.id)
+    }
 }

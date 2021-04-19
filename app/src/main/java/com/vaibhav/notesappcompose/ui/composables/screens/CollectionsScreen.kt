@@ -28,6 +28,7 @@ import com.vaibhav.notesappcompose.ui.composables.CollectionItem
 import com.vaibhav.notesappcompose.ui.composables.Fab
 import com.vaibhav.notesappcompose.ui.composables.SearchBar
 import com.vaibhav.notesappcompose.ui.composables.UserAvatar
+import com.vaibhav.notesappcompose.ui.composables.dialogs.DeleteDialog
 import com.vaibhav.notesappcompose.ui.theme.darkGray
 import com.vaibhav.notesappcompose.ui.theme.lightGray
 import com.vaibhav.notesappcompose.ui.viewmodels.CollectionViewModel
@@ -43,6 +44,7 @@ fun CollectionsScreen(navController: NavController) {
     val loadingState = viewModel.loadingState.value
     val errorState = viewModel.errorState.value
     val dialogState = viewModel.dialogState.value
+    val deleteDialogState = viewModel.isDeleteDialogVisible.value
 
 
     ConstraintLayout(
@@ -70,6 +72,16 @@ fun CollectionsScreen(navController: NavController) {
         AddCollectionDialog(
             isVisible = dialogState,
             viewModel = viewModel
+        )
+        DeleteDialog(
+            text = viewModel.deleteText,
+            isVisible = deleteDialogState,
+            onDismissPressed = {
+                viewModel.dismissDeleteCollectionDialog()
+            },
+            onDeletePressed = {
+                viewModel.onDeleteDialogPressed()
+            }
         )
 
         if (loadingState)
@@ -113,9 +125,13 @@ fun CollectionMainScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             items(collections) {
-                CollectionItem(collection = it) { collection ->
-                    navController.navigate("noteScreen/${collection.id}/${collection.name}")
-                }
+                CollectionItem(collection = it,
+                    onClick = { collection ->
+                        navController.navigate("noteScreen/${collection.id}/${collection.name}")
+                    },
+                    onItemLongPress = { collection ->
+                        viewModel.showDeleteCollectionDialog(collection)
+                    })
             }
         }
     }

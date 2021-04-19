@@ -3,7 +3,6 @@ package com.vaibhav.notesappcompose.ui.viewmodels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.vaibhav.notesappcompose.data.models.entity.Note
-
 import com.vaibhav.notesappcompose.data.repo.note.NoteRepoImpl
 import com.vaibhav.notesappcompose.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +15,16 @@ class NotesViewModel @Inject constructor(private val noteRepoImpl: NoteRepoImpl)
 
     val loadingState = mutableStateOf(false)
     val errorState = mutableStateOf("")
-    val searchQuery = MutableLiveData<String>("")
+    val searchQuery = MutableLiveData("")
     val collectionId = MutableLiveData<Long>(0)
     val importantNotesCount = mutableStateOf(0L)
     val collectionName = mutableStateOf("")
+
+
+    //delete note dialog
+    val isDeleteDialogVisible = mutableStateOf(false)
+    val deleteText = "Are you sure , you want to delete this collection?"
+    private val deleteCNote = mutableStateOf<Note?>(null)
 
     private val _notes = searchQuery.switchMap {
         noteRepoImpl.getAllNotes(it)
@@ -29,6 +34,34 @@ class NotesViewModel @Inject constructor(private val noteRepoImpl: NoteRepoImpl)
     fun setCollectionName(name: String) {
         collectionName.value = name
     }
+
+    fun dismissDialog() {
+        isDeleteDialogVisible.value = false
+    }
+
+    fun showDialog(note: Note) {
+        isDeleteDialogVisible.value = true
+        deleteCNote.value = note
+    }
+
+    fun onDeleteDialogPressed() = viewModelScope.launch {
+        dismissDialog()
+        loadingState.value = true
+        val resource = noteRepoImpl.deleteNote(deleteCNote.value ?: Note())
+        when (resource) {
+            is Resource.Error -> {
+                loadingState.value = false
+                errorState.value = resource.message.toString()
+            }
+            is Resource.Loading -> {
+
+            }
+            is Resource.Success -> {
+                loadingState.value = false
+            }
+        }
+    }
+
 
     fun setCollectionId(id: Long) {
         Timber.d(id.toString())

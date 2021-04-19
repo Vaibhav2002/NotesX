@@ -9,6 +9,8 @@ import retrofit2.http.*
 
 interface Api {
 
+
+    //auth
     @GET("/user/login")
     suspend fun loginUser(
         @Query("email") email: String,
@@ -20,15 +22,25 @@ interface Api {
         @Body registerBody: RegisterBody
     ): Response<AuthResponse>
 
+
+    //collection
     @GET("/collection/{userId}")
     suspend fun getAllCollections(@Path("userId") userId: Long): Response<CollectionResponse>
 
     @POST("/collection")
     suspend fun addCollection(@Body collection: CollectionBody): Response<CollectionResponseItem>
 
+    @DELETE("/collection")
+    suspend fun deleteCollection(@Query("collectionId") collectionId: Long): Response<CollectionResponseItem>
+
+
+    //note
+    @POST("/note")
+    suspend fun addNewNote(@Body note: NoteBody): Response<NoteResponseItem>
+
     @GET("/note/{collectionId}")
     suspend fun getAllNotes(@Path("collectionId") collectionId: Long): Response<NoteResponse>
 
-    @POST("/note")
-    suspend fun addNewNote(@Body note: NoteBody): Response<NoteResponseItem>
+    @DELETE("/note")
+    suspend fun deleteNote(@Query("noteId") noteId: Long): Response<NoteResponseItem>
 }

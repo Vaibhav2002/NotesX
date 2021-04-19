@@ -45,9 +45,41 @@ class CollectionViewModel @Inject constructor(
     var isCollectionImportant = mutableStateOf(false)
     var addCollectionLoadingState = mutableStateOf(false)
 
+    //deleteDialog
+    val isDeleteDialogVisible = mutableStateOf(false)
+    val deleteText = "Are you sure, you want to delete this collection?"
+    private val deleteCollection = mutableStateOf<Collection?>(null)
+
     fun setDialogState(state: Boolean) {
         dialogState.value = state
     }
+
+    fun dismissDeleteCollectionDialog() {
+        isDeleteDialogVisible.value = false
+    }
+
+    fun showDeleteCollectionDialog(collection: Collection) {
+        isDeleteDialogVisible.value = true
+        deleteCollection.value = collection
+    }
+
+    fun onDeleteDialogPressed() = viewModelScope.launch {
+        dismissDeleteCollectionDialog()
+        loadingState.value = true
+        val resource = collectionRepoImpl.deleteCollection(deleteCollection.value ?: Collection())
+        when (resource) {
+            is Resource.Error -> {
+                loadingState.value = false
+                errorState.value = resource.message.toString()
+            }
+            is Resource.Loading -> {
+            }
+            is Resource.Success -> {
+                loadingState.value = false
+            }
+        }
+    }
+
 
     fun setImportantCollectionCount(count: Long) {
         importantCollectionState.value = count

@@ -10,5 +10,7 @@ interface AuthRepo {
 
     suspend fun registerUser(registerBody: RegisterBody): Resource<User>
 
+    fun logoutUser()
 
+    fun getUserData(): User
 }

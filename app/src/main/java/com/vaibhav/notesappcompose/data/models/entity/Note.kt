@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "note_table")
 data class Note(
-    val text: String,
-    val isImportant: Boolean,
+    val text: String = "",
+    val isImportant: Boolean = false,
     val timeStamp: String = System.currentTimeMillis().toString(),
     @PrimaryKey
     val id: Long = 0,

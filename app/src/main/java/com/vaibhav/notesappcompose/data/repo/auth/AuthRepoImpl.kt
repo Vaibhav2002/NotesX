@@ -63,4 +63,12 @@ class AuthRepoImpl @Inject constructor(
 
 
     fun isUserLoggedIn() = preferencesRepo.isUserLoggedIn()
+
+    override fun logoutUser() {
+        preferencesRepo.removeUserData()
+    }
+
+    override fun getUserData(): User {
+        return preferencesRepo.getUserData()!!
+    }
 }

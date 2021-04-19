@@ -3,14 +3,12 @@ package com.vaibhav.notesappcompose.ui.composables.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.vaibhav.notesappcompose.ui.composables.OutlinedTextField
@@ -33,7 +31,6 @@ fun AddCollectionDialog(
             Column(
                 modifier = Modifier
                     .background(MaterialTheme.colors.surface)
-                    .clip(AbsoluteRoundedCornerShape(32.dp))
             ) {
                 Spacer(modifier = Modifier.padding(8.dp))
                 Text(

@@ -30,6 +30,7 @@ import com.vaibhav.notesappcompose.R
 import com.vaibhav.notesappcompose.ui.composables.Fab
 import com.vaibhav.notesappcompose.ui.composables.NoteItem
 import com.vaibhav.notesappcompose.ui.composables.SearchBar
+import com.vaibhav.notesappcompose.ui.composables.dialogs.DeleteDialog
 import com.vaibhav.notesappcompose.ui.theme.darkGray
 import com.vaibhav.notesappcompose.ui.theme.lightGray
 import com.vaibhav.notesappcompose.ui.viewmodels.NotesViewModel
@@ -50,6 +51,7 @@ fun NoteScreen(navController: NavController, collectionId: String, collectionNam
 
     val loadingState = viewModel.loadingState.value
     val errorState = viewModel.errorState.value
+    val deleteDialogState = viewModel.isDeleteDialogVisible.value
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (screen, fab, loading) = createRefs()
@@ -79,7 +81,12 @@ fun NoteScreen(navController: NavController, collectionId: String, collectionNam
                     bottom.linkTo(parent.bottom)
                 }
             )
-
+        DeleteDialog(
+            text = viewModel.deleteText,
+            isVisible = deleteDialogState,
+            onDeletePressed = { viewModel.onDeleteDialogPressed() },
+            onDismissPressed = { viewModel.dismissDialog() }
+        )
 
         Fab(icon = R.drawable.ic_baseline_add_24, modifier = Modifier.constrainAs(fab) {
             bottom.linkTo(parent.bottom, margin = 16.dp)
@@ -139,9 +146,13 @@ fun NoteMainScreen(
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             items(notes) {
-                NoteItem(note = it) {
+                NoteItem(note = it,
+                    onClick = {
 
-                }
+                    },
+                    onItemLongPress = { note ->
+                        viewModel.showDialog(note)
+                    })
             }
         }
     }

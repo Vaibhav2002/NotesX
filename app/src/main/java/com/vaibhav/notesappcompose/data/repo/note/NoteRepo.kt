@@ -15,4 +15,8 @@ interface NoteRepo {
     suspend fun saveNotesIntoDatabase(notes: List<Note>)
 
     suspend fun deleteAllFromDatabase()
+
+    suspend fun deleteNote(note: Note): Resource<Note>
+
+    suspend fun deleteNoteFromDb(note: Note)
 }

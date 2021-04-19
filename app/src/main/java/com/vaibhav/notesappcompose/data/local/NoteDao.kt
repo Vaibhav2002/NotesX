@@ -3,7 +3,6 @@ package com.vaibhav.notesappcompose.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.vaibhav.notesappcompose.data.models.entity.Note
@@ -14,8 +13,8 @@ interface NoteDao {
     @Insert
     suspend fun insertNotes(notes: List<Note>)
 
-    @Delete
-    suspend fun deleteNote(note: Note)
+    @Query("DELETE FROM note_table WHERE id = :noteId")
+    suspend fun deleteNote(noteId: Long)
 
     @Query("DELETE FROM note_table")
     suspend fun deleteAllNotes()

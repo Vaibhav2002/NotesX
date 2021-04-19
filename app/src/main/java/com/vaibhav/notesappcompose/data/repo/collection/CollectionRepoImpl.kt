@@ -78,4 +78,30 @@ class CollectionRepoImpl @Inject constructor(
     override suspend fun deleteAllFromDatabase() = withContext(Dispatchers.IO) {
         collectionDao.deleteAllCollections()
     }
+
+    override suspend fun deleteCollection(collection: Collection): Resource<Collection> =
+        withContext(Dispatchers.IO) {
+            try {
+                val response = api.deleteCollection(collection.id)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        val collection = collectionMapper.mapToDomainModel(it)
+                        deleteCollectionFromDb(collection)
+                        return@withContext Resource.Success(collection)
+                    } ?: return@withContext Resource.Error(response.message())
+                } else {
+                    val error = mapToErrorResponse(response.errorBody())
+                    return@withContext Resource.Error(
+                        error.message
+                    )
+                }
+            } catch (e: Exception) {
+                return@withContext Resource.Error(e.localizedMessage ?: "Oops something went wrong")
+            }
+        }
+
+    override suspend fun deleteCollectionFromDb(collection: Collection) =
+        withContext(Dispatchers.IO) {
+            collectionDao.deleteCollection(collection.id)
+        }
 }
