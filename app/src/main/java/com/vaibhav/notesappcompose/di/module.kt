@@ -9,11 +9,14 @@ import com.vaibhav.notesappcompose.data.models.mappers.CollectionMapper
 import com.vaibhav.notesappcompose.data.models.mappers.NoteMapper
 import com.vaibhav.notesappcompose.data.models.mappers.UserMapper
 import com.vaibhav.notesappcompose.data.remote.Api
+import com.vaibhav.notesappcompose.data.util.APIKEY
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -22,11 +25,22 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object module {
 
+
     @Provides
     @Singleton
-    fun providesRetrofit(): Retrofit =
+    fun providesOkHttp(): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor {
+            val request: Request = it.request().newBuilder().addHeader("api_key", APIKEY).build()
+            it.proceed(request)
+        }
+        .build()
+
+    @Provides
+    @Singleton
+    fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder().baseUrl("http://spring-boot-notes-app.herokuapp.com")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
 
     @Provides

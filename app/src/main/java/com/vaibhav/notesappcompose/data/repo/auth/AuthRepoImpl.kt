@@ -4,6 +4,8 @@ import com.vaibhav.notesappcompose.data.models.entity.User
 import com.vaibhav.notesappcompose.data.models.mappers.UserMapper
 import com.vaibhav.notesappcompose.data.models.remote.requests.RegisterBody
 import com.vaibhav.notesappcompose.data.remote.Api
+import com.vaibhav.notesappcompose.data.repo.collection.CollectionRepoImpl
+import com.vaibhav.notesappcompose.data.repo.note.NoteRepoImpl
 import com.vaibhav.notesappcompose.data.repo.preferences.PreferencesRepo
 import com.vaibhav.notesappcompose.data.util.mapToErrorResponse
 import com.vaibhav.notesappcompose.util.Resource
@@ -15,7 +17,9 @@ import javax.inject.Inject
 class AuthRepoImpl @Inject constructor(
     private val api: Api,
     private val userMapper: UserMapper,
-    private val preferencesRepo: PreferencesRepo
+    private val preferencesRepo: PreferencesRepo,
+    private val collectionRepoImpl: CollectionRepoImpl,
+    private val notesRepoImpl: NoteRepoImpl
 ) :
     AuthRepo {
 
@@ -64,8 +68,12 @@ class AuthRepoImpl @Inject constructor(
 
     fun isUserLoggedIn() = preferencesRepo.isUserLoggedIn()
 
-    override fun logoutUser() {
-        preferencesRepo.removeUserData()
+    override suspend fun logoutUser() {
+        withContext(Dispatchers.IO) {
+            preferencesRepo.removeUserData()
+            collectionRepoImpl.deleteAllFromDatabase()
+            notesRepoImpl.deleteAllFromDatabase()
+        }
     }
 
     override fun getUserData(): User {
