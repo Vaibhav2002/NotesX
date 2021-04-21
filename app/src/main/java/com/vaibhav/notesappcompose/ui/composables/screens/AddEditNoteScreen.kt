@@ -21,15 +21,20 @@ import com.vaibhav.notesappcompose.ui.composables.OutlinedTextField
 import com.vaibhav.notesappcompose.ui.theme.darkGray
 import com.vaibhav.notesappcompose.ui.theme.lightGray
 import com.vaibhav.notesappcompose.ui.theme.white
-import com.vaibhav.notesappcompose.ui.viewmodels.AddNoteViewModel
+import com.vaibhav.notesappcompose.ui.viewmodels.AddEditNoteViewModel
+import timber.log.Timber
 
 @Composable
-fun AddNoteScreen(navController: NavController, collectionId: String) {
+fun AddEditNoteScreen(navController: NavController, collectionId: String, note: String) {
 
-    val viewModel: AddNoteViewModel =
+    val viewModel: AddEditNoteViewModel =
         hiltNavGraphViewModel(backStackEntry = navController.currentBackStackEntry!!)
 
+    Timber.d(note)
     remember {
+        if (note != "null") {
+            viewModel.setNote(note)
+        }
         viewModel.setCollectionId(collectionId.toLong())
         true
     }
@@ -37,13 +42,15 @@ fun AddNoteScreen(navController: NavController, collectionId: String) {
     val errorState = viewModel.errorState.value
     val loadingState = viewModel.loadingState.value
     val navigateBackState = viewModel.navigateBackState.value
+    val topText = viewModel.topText.value
 
     if (navigateBackState)
         navController.popBackStack()
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (screen, fab, loading) = createRefs()
-        AddNoteMainScreen(
+        AddEditNoteMainScreen(
+            topText,
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colors.background)
@@ -72,15 +79,16 @@ fun AddNoteScreen(navController: NavController, collectionId: String) {
             bottom.linkTo(parent.bottom, margin = 16.dp)
             end.linkTo(parent.end, margin = 16.dp)
         }) {
-            viewModel.onAddNoteButtonPressed()
+            viewModel.onFabPressed()
         }
     }
 }
 
 @Composable
-fun AddNoteMainScreen(
+fun AddEditNoteMainScreen(
+    topText: String,
     modifier: Modifier,
-    viewModel: AddNoteViewModel
+    viewModel: AddEditNoteViewModel
 ) {
 
     val isImportantState = viewModel.isImportantState.value
@@ -92,7 +100,7 @@ fun AddNoteMainScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Create\nNote",
+            text = topText,
             style = MaterialTheme.typography.h2,
             color = MaterialTheme.colors.onBackground,
             modifier = Modifier

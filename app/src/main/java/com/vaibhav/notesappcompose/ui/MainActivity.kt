@@ -20,7 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             NotesAppComposeTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "loginScreen") {
+                NavHost(navController = navController, startDestination = "splashScreen") {
+                    composable("splashScreen") { SplashScreen(navController = navController) }
                     composable("loginScreen") { LoginScreen(navController) }
                     composable("registerScreen") { RegisterScreen(navController) }
                     composable("collectionScreen") { CollectionsScreen(navController) }
@@ -31,10 +32,11 @@ class MainActivity : ComponentActivity() {
                             it.arguments?.getString("collectionName") ?: "Notes"
                         )
                     }
-                    composable("addNoteScreen/{collectionId}") {
-                        AddNoteScreen(
+                    composable("addEditNoteScreen/{collectionId}/{notes}") {
+                        AddEditNoteScreen(
                             navController,
-                            it.arguments?.getString("collectionId") ?: "0"
+                            it.arguments?.getString("collectionId") ?: "0",
+                            it.arguments?.getString("notes") ?: "null"
                         )
                     }
                     composable("profileScreen") { ProfileScreen(navController = navController) }

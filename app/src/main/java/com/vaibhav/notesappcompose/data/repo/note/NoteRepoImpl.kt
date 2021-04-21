@@ -70,31 +70,56 @@ class NoteRepoImpl @Inject constructor(
             }
         }
 
+
+    override suspend fun deleteNote(note: Note): Resource<Note> = withContext(Dispatchers.IO) {
+        try {
+            val response = api.deleteNote(note.id)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    val note = noteMapper.mapToDomainModel(it)
+                    deleteNoteFromDb(note)
+                    return@withContext Resource.Success(note)
+                } ?: Resource.Error(response.message(), null)
+            } else {
+                val error = mapToErrorResponse(response.errorBody())
+                return@withContext Resource.Error(
+                    error.message
+                )
+            }
+        } catch (exception: Exception) {
+            Resource.Error(exception.localizedMessage ?: "Oops something went wrong")
+        }
+    }
+
+    override suspend fun updateNote(note: Note): Resource<Note> = withContext(Dispatchers.IO) {
+        try {
+            val response = api.updateNote(note.id, note.text, note.isImportant)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    val noteEntity = noteMapper.mapToDomainModel(it)
+                    saveNotesIntoDatabase(listOf(noteEntity))
+                    return@withContext Resource.Success(noteEntity)
+                } ?: Resource.Error(response.message())
+            } else {
+                val error = mapToErrorResponse(response.errorBody())
+                return@withContext Resource.Error(
+                    error.message
+                )
+            }
+        } catch (exception: Exception) {
+            Resource.Error(exception.localizedMessage ?: "Oops something went wrong")
+        }
+    }
+
+    override suspend fun deleteNoteFromDb(note: Note) = withContext(Dispatchers.IO) {
+        noteDao.deleteNote(note.id)
+    }
+
     override suspend fun saveNotesIntoDatabase(notes: List<Note>) = withContext(Dispatchers.IO) {
         noteDao.insertNotes(notes)
     }
 
     override suspend fun deleteAllFromDatabase() = withContext(Dispatchers.IO) {
         noteDao.deleteAllNotes()
-    }
-
-    override suspend fun deleteNote(note: Note): Resource<Note> = withContext(Dispatchers.IO) {
-        val response = api.deleteNote(note.id)
-        if (response.isSuccessful) {
-            response.body()?.let {
-                val note = noteMapper.mapToDomainModel(it)
-                deleteNoteFromDb(note)
-                return@withContext Resource.Success(note)
-            } ?: Resource.Error(response.message(), null)
-        } else {
-            val error = mapToErrorResponse(response.errorBody())
-            return@withContext Resource.Error(
-                error.message
-            )
-        }
-    }
-
-    override suspend fun deleteNoteFromDb(note: Note) = withContext(Dispatchers.IO) {
-        noteDao.deleteNote(note.id)
     }
 }

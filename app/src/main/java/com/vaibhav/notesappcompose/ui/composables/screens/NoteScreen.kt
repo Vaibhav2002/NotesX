@@ -26,6 +26,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
+import com.google.gson.Gson
 import com.vaibhav.notesappcompose.R
 import com.vaibhav.notesappcompose.ui.composables.Fab
 import com.vaibhav.notesappcompose.ui.composables.NoteItem
@@ -65,6 +66,8 @@ fun NoteScreen(navController: NavController, collectionId: String, collectionNam
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
                 },
+            navController,
+            collectionId,
             viewModel
         )
 
@@ -92,7 +95,8 @@ fun NoteScreen(navController: NavController, collectionId: String, collectionNam
             bottom.linkTo(parent.bottom, margin = 16.dp)
             end.linkTo(parent.end, margin = 16.dp)
         }) {
-            navController.navigate("addNoteScreen/$collectionId")
+            val note = Gson().toJson(null)
+            navController.navigate("addEditNoteScreen/$collectionId/$note")
         }
     }
 
@@ -103,6 +107,8 @@ fun NoteScreen(navController: NavController, collectionId: String, collectionNam
 @Composable
 fun NoteMainScreen(
     modifier: Modifier,
+    navController: NavController,
+    collectionId: String,
     viewModel: NotesViewModel
 ) {
     val color = if (isSystemInDarkTheme()) lightGray else darkGray
@@ -148,7 +154,8 @@ fun NoteMainScreen(
             items(notes) {
                 NoteItem(note = it,
                     onClick = {
-
+                        val note = Gson().toJson(it)
+                        navController.navigate("addEditNoteScreen/$collectionId/$note")
                     },
                     onItemLongPress = { note ->
                         viewModel.showDialog(note)

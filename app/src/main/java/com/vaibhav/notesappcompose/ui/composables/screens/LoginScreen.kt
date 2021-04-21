@@ -27,7 +27,6 @@ fun LoginScreen(navController: NavController) {
     val viewModel: LoginViewModel =
         hiltNavGraphViewModel(backStackEntry = navController.currentBackStackEntry!!)
 
-
     val uiState = viewModel.loginState.observeAsState()
     LoginMainScreen(navController = navController, viewModel = viewModel)
     uiState.value?.let { state ->

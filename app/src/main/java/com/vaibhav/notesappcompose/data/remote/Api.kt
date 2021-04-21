@@ -43,4 +43,11 @@ interface Api {
 
     @DELETE("/note")
     suspend fun deleteNote(@Query("noteId") noteId: Long): Response<NoteResponseItem>
+
+    @PUT("/note/{id}")
+    suspend fun updateNote(
+        @Path("id") id: Long,
+        @Query("text") text: String,
+        @Query("isImportant") isImportant: Boolean
+    ): Response<NoteResponseItem>
 }

@@ -4,13 +4,14 @@ package com.vaibhav.notesappcompose.data.local
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vaibhav.notesappcompose.data.models.entity.Note
 
 @Dao
 interface NoteDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNotes(notes: List<Note>)
 
     @Query("DELETE FROM note_table WHERE id = :noteId")
