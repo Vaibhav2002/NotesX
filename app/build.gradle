@@ -9,6 +9,13 @@ plugins {
 android {
     compileSdk 30
 
+    packagingOptions {
+        exclude "**/attach_hotspot_windows.dll"
+        exclude "META-INF/licenses/**"
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+    }
+
     defaultConfig {
         applicationId "com.vaibhav.notesappcompose"
         minSdk 23
@@ -28,6 +35,7 @@ android {
         }
     }
 
+
     buildTypes {
         release {
             minifyEnabled false
@@ -45,6 +53,7 @@ android {
     buildFeatures {
         compose true
     }
+
 
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
@@ -108,6 +117,11 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
+
+    //testing
+    androidTestImplementation "com.google.truth:truth:1.0.1"
+    testImplementation "androidx.room:room-testing:$room_version"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
 
 
 }
