@@ -1,4 +1,5 @@
 ![](media/design_light.png)
+
 ![](media/design_ldark.png)
 
 # **NotesX** 
@@ -7,7 +8,7 @@
 
 ***You can Install and test latest NotesX app from below 👇***
 
-[![NotesX](https://img.shields.io/badge/NotesX✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/Vaibhav2002/NotesX/blob/main/app/release/app-release.apk)
+[![NotesX](https://img.shields.io/badge/NotesX✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/Vaibhav2002/NotesX/releases/tag/1.0.0)
 
 
 ## Setup
@@ -16,7 +17,7 @@ You can get the Spring Boot backend code from https://github.com/Vaibhav2002/Spr
 
 ## About
 
- It uses my custom Spring Boot Backend. It is build purely on Jetpck Compose and follows the best android development practices.
+ It uses my custom Spring Boot Backend. It is build purely on Jetpack Compose and follows the best android development practices.
 
 - Fully functionable. 
 - Clean and Simple Material UI.
